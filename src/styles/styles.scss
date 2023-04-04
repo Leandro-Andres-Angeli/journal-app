@@ -1,0 +1,19 @@
+@import "./base/settings";
+@import "./base/base";
+    
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+    background-color: rgb(231, 230, 230);
+
+  
+ 
+}
+
+button {
+  font: inherit;
+}
