@@ -1,6 +1,12 @@
-@import "./base/settings";
-@import "./base/base";
-    
+@import './base/settings';
+@import './base/base';
+@import './component/auth';
+@import './component/buttons';
+@import './component/links';
+@import './component/journal';
+@import './component/nothing';
+@import './component/notes';
+
 *,
 *::before,
 *::after {
@@ -8,10 +14,7 @@
 }
 
 body {
-    background-color: rgb(231, 230, 230);
-
-  
- 
+  background-color: rgb(231, 230, 230);
 }
 
 button {
