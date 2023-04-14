@@ -2,13 +2,17 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useForm } from '../../hooks/useForm';
 import validator from 'validator';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { uiReducer } from '../reducers/uiReducer';
 import { types } from '../../types/types';
 import { removeError, setError } from '../../actions/ui';
+import { startRegisterWithEmailPasswordName } from '../../actions/auth';
 
 const RegisterScreen = () => {
   const dispatch = useDispatch();
+  const {
+    ui: { msgError },
+  } = useSelector((state) => state);
   const [values, handleInputChange, reset] = useForm({
     name: 'jose',
     password: '123456',
@@ -35,7 +39,7 @@ const RegisterScreen = () => {
   const handleRegister = (e) => {
     e.preventDefault();
     if (isFormValid()) {
-      console.log(values);
+      dispatch(startRegisterWithEmailPasswordName(email, password, name));
     }
     // Object.entries(values).forEach(({ name, value }) => {
     //   console.log(`${name} : ${value}`);
@@ -45,7 +49,8 @@ const RegisterScreen = () => {
     <>
       <h3 className='auth__title'>Register</h3>
       <form onSubmit={handleRegister}>
-        <div className='auth__alert-error'>Hola Mundo</div>
+        {msgError && <div className='auth__alert-error'>{msgError}</div>}
+        {/* <div className='auth__alert-error'>Hola Mundo</div> */}
         <input
           onChange={handleInputChange}
           className='auth__input'
