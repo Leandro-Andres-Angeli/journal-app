@@ -3,7 +3,7 @@ import { store } from '../../store/store';
 import { getState } from 'react-redux';
 const NotesAppBar = () => {
   const storeData = store.getState();
-  console.log(storeData);
+
   return (
     <div className='notes__appbar'>
       <span>28 08 2023</span>

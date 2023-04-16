@@ -1,10 +1,29 @@
 import { types } from '../types/types';
 import { firebase, googleAuthProvider } from '../firebase/firebase_config';
+import { useDispatch } from 'react-redux';
+import { finishLoading, startLoading, testAction } from './ui';
+
 export const startLoginEmailPassword = (email, password) => {
   return (dispatch) => {
-    setTimeout(() => {
-      dispatch(login(123, 'pedro'));
-    }, 3500);
+    dispatch(startLoading());
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        // console.log(user);
+
+        dispatch(login(user.uid, user.displayName));
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        dispatch(finishLoading());
+      });
+    // setTimeout(() => {
+    //   dispatch(login(123, 'pedro'));
+    // }, 3500);
   };
 };
 export const startRegisterWithEmailPasswordName = (email, password, name) => {
@@ -36,4 +55,14 @@ export const startGoogleLogin = () => {
 export const login = (uid, name) => ({
   type: types.login,
   payload: { uid, name },
+});
+
+export const startLogout = () => {
+  return async (dispatch) => {
+    await firebase.auth().signOut();
+    dispatch(logout());
+  };
+};
+export const logout = () => ({
+  type: types.logout,
 });
