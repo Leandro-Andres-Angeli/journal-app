@@ -11,21 +11,25 @@ import JournalScreen from '../components/journal/JournalScreen';
 
 import * as firebase from 'firebase/app';
 
-import { onAuthStateChanged } from 'firebase/auth';
+// import { onAuthStateChanged } from 'firebase/auth';
 import { useDispatch } from 'react-redux';
 import { login } from '../actions/auth';
 import { Redirect } from 'react-router-dom/cjs/react-router-dom.min';
 import { AuthRouter } from './AuthRouter';
+import { startLoadingNotes } from '../actions/notes';
+// import { loadNotes } from '../helpers/loadNotes';
+// import { setNotes, startLoadingNotes } from '../actions/notes';
 
 const AppRouter = () => {
   const dispatch = useDispatch();
   const [checking, setChecking] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
-    firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged(async (user) => {
       if (user?.uid) {
         dispatch(login(user.uid, user.displayName));
         setIsLoggedIn(true);
+        dispatch(startLoadingNotes(user.uid));
       } else {
         setIsLoggedIn(false);
       }

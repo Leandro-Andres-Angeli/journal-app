@@ -1,15 +1,21 @@
 import React from 'react';
 import Sidebar from './Sidebar';
-// import NothingSelected from './NothingSelected';
+import NothingSelected from './NothingSelected';
 import NoteScreen from '../notes/NoteScreen';
+import { useSelector } from 'react-redux';
 
 const JournalScreen = () => {
+  const { active } = useSelector((state) => state.notes);
   return (
     <div className='journal__main-content'>
       <Sidebar></Sidebar>
       <main>
+        {active !== null ? (
+          <NoteScreen></NoteScreen>
+        ) : (
+          <NothingSelected></NothingSelected>
+        )}
         {/* <NothingSelected></NothingSelected> */}
-        <NoteScreen></NoteScreen>
       </main>
     </div>
   );

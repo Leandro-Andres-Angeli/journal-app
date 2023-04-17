@@ -1,7 +1,9 @@
 import { types } from '../types/types';
 import { firebase, googleAuthProvider } from '../firebase/firebase_config';
-import { useDispatch } from 'react-redux';
-import { finishLoading, startLoading, testAction } from './ui';
+// import { useDispatch } from 'react-redux';
+import { finishLoading, startLoading } from './ui';
+
+import Swal from 'sweetalert2';
 
 export const startLoginEmailPassword = (email, password) => {
   return (dispatch) => {
@@ -17,6 +19,8 @@ export const startLoginEmailPassword = (email, password) => {
       })
       .catch((err) => {
         console.log(err);
+
+        Swal.fire('Error', err.message, 'error');
       })
       .finally(() => {
         dispatch(finishLoading());
@@ -37,7 +41,7 @@ export const startRegisterWithEmailPasswordName = (email, password, name) => {
         dispatch(login(user.uid, user.displayName));
       })
       .catch((err) => {
-        console.log(err);
+        Swal.fire('Error', err.message, 'error');
       });
   };
 };
