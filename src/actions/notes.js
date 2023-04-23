@@ -4,6 +4,7 @@ import { types } from '../types/types';
 import { startLoading } from './ui';
 import { loadNotes } from '../helpers/loadNotes';
 import Swal from 'sweetalert2';
+import { fileUpload } from '../helpers/fileUpload';
 export const startNewNote = () => {
   return async (dispatch, getState) => {
     const {
@@ -69,3 +70,13 @@ export const refreshNote = (id, note) => ({
     ...note,
   },
 });
+
+export const startUploading = (file) => {
+  return async (dispatch, getState) => {
+    const { active: activeNote } = getState().notes;
+    // console.log(file);
+    // console.log(activeNote);
+    const fileUrl = await fileUpload(file);
+    console.log(fileUrl);
+  };
+};
