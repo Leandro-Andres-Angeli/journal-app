@@ -14,7 +14,7 @@ export const startNewNote = () => {
     const newNote = {
       title: '',
       body: '',
-      // date: new Date().getTime(),
+      date: new Date().getTime(),
       userId: uid,
       isPrivate: false,
     };
@@ -74,9 +74,35 @@ export const refreshNote = (id, note) => ({
 export const startUploading = (file) => {
   return async (dispatch, getState) => {
     const { active: activeNote } = getState().notes;
+    Swal.fire({
+      title: 'Uploading...',
+      text: 'please wait',
+      allowOutsideClick: false,
+      onBeforeOpen: () => {
+        Swal.showLoading();
+      },
+    });
     // console.log(file);
     // console.log(activeNote);
     const fileUrl = await fileUpload(file);
     console.log(fileUrl);
+    activeNote.url = fileUrl;
+    dispatch(startSaveNote(activeNote));
+    Swal.close();
   };
 };
+export const startDeleting = (id) => {
+  return async (dispatch, getState) => {
+    const uid = getState().auth.uid;
+
+    const deleteFromFirebase = await db
+      .doc(`${uid}/journal/notes/${id}`)
+      .delete();
+    console.log(deleteFromFirebase);
+    dispatch(deleteNote(id));
+  };
+};
+export const deleteNote = (id) => ({
+  type: types.deleteNote,
+  payload: id,
+});

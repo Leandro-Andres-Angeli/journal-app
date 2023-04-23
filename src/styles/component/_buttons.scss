@@ -23,6 +23,15 @@
     background-color: darken($color: $primary, $amount: 15);
   }
 }
+.btn-danger {
+  background-color: red;
+  color: white;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  &:hover {
+    background-color: darken($color: red, $amount: 10);
+  }
+}
 .btn-block {
   width: 100%;
 }

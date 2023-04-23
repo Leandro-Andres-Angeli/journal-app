@@ -2,9 +2,12 @@ import moment from 'moment';
 import React from 'react';
 import { activeNote } from '../../actions/notes';
 import { useDispatch } from 'react-redux';
-export const JournalEntry = ({ id, title, body, url }) => {
+export const JournalEntry = ({ id, title, body, url, date }) => {
   const dispatch = useDispatch();
-  // const noteDate = moment(date);
+  let noteDate = undefined;
+  if (date) {
+    noteDate = moment(date);
+  }
   const handleEntryClick = () => {
     dispatch(activeNote(id, { title, body, url }));
   };
@@ -25,12 +28,12 @@ export const JournalEntry = ({ id, title, body, url }) => {
         <p className='journal__entry-title'>{title && title}</p>
         <p className='journal__entry-content'>{body && body}</p>
         <div className='journal__entry-date-box'>
-          {/* {noteDate && (
+          {noteDate && (
             <>
               <span>{noteDate.format('dddd')}</span>
               <h4>{noteDate.format('Do')}</h4>
             </>
-          )} */}
+          )}
         </div>
       </div>
     </div>
