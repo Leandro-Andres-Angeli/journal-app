@@ -3,6 +3,7 @@ import { db } from '../firebase/firebase_config';
 import { types } from '../types/types';
 import { startLoading } from './ui';
 import { loadNotes } from '../helpers/loadNotes';
+import Swal from 'sweetalert2';
 export const startNewNote = () => {
   return async (dispatch, getState) => {
     const {
@@ -12,7 +13,7 @@ export const startNewNote = () => {
     const newNote = {
       title: '',
       body: '',
-      createdAt: new Date().getTime(),
+      // date: new Date().getTime(),
       userId: uid,
       isPrivate: false,
     };
@@ -40,3 +41,31 @@ export const setNotes = (notes) => {
     payload: notes,
   };
 };
+
+export const startSaveNote = (note) => {
+  return async (dispatch, getState) => {
+    const {
+      auth: { uid },
+    } = getState();
+    if (!note.url) {
+      delete note.url;
+    }
+    console.log(note);
+    const noteToFirestore = { ...note };
+    delete noteToFirestore.id;
+    await db.doc(`${uid}/journal/notes/${note.id}`).update(noteToFirestore);
+    //   .doc(note.id)
+    //   .update(note);
+    // dispatch(activeNote(doc.id, note));
+    dispatch(refreshNote(note.id, noteToFirestore));
+    Swal.fire('Saved', note.title, 'success');
+  };
+};
+
+export const refreshNote = (id, note) => ({
+  type: types.notesUpdated,
+  payload: {
+    id,
+    ...note,
+  },
+});
