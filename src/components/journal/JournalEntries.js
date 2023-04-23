@@ -6,7 +6,7 @@ const JournalEntries = () => {
   const { notes: entries } = useSelector((state) => state.notes);
   // console.log(entries);
   return (
-    <div className='journal__entries'>
+    <div className='journal__entries '>
       {entries?.map((entry) => (
         <JournalEntry key={entry.id} {...entry}></JournalEntry>
       ))}
